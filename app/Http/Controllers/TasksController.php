@@ -14,7 +14,7 @@ class TasksController extends Controller
             $user = \Auth::user();
             // ユーザの投稿の一覧を作成日時の降順で取得
             // （後のChapterで他ユーザの投稿も取得するように変更しますが、現時点ではこのユーザの投稿のみ取得します）
-            $tasks = $user->task()->orderBy('created_at', 'desc')->paginate(10);
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
 
             $data = [
                 'user' => $user,
@@ -45,7 +45,7 @@ class TasksController extends Controller
       public function destroy($id)
     {
         // idの値で投稿を検索して取得
-        $task = \App\Tasklist::findOrFail($id);
+        $tasks = \App\Tasklist::findOrFail($id);
 
         // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
         if (\Auth::id() === $task->user_id) {
