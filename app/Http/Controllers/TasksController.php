@@ -14,11 +14,11 @@ class TasksController extends Controller
             $user = \Auth::user();
             // ユーザの投稿の一覧を作成日時の降順で取得
             // （後のChapterで他ユーザの投稿も取得するように変更しますが、現時点ではこのユーザの投稿のみ取得します）
-            $task = $user->task()->orderBy('created_at', 'desc')->paginate(10);
+            $tasks = $user->task()->orderBy('created_at', 'desc')->paginate(10);
 
             $data = [
                 'user' => $user,
-                'microposts' => $microposts,
+                'tasks' => $tasks,
             ];
         }
 
@@ -34,7 +34,7 @@ class TasksController extends Controller
         ]);
 
         // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
-        $request->user()->microposts()->create([
+        $request->user()->task()->create([
             'content' => $request->content,
         ]);
 
