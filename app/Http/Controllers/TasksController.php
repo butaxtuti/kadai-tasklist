@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {
+    
     public function index()
     {
         $data = [];
@@ -34,7 +35,7 @@ class TasksController extends Controller
         ]);
 
         // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
-        $request->user()->task()->create([
+        $request->user()->tasks()->create([
             'content' => $request->content,
         ]);
 
@@ -45,7 +46,7 @@ class TasksController extends Controller
       public function destroy($id)
     {
         // idの値で投稿を検索して取得
-        $tasks = \App\Task::findOrFail($id);
+        $task = \App\Task::findOrFail($id);
 
         // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
         if (\Auth::id() === $task->user_id) {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTasksTable extends Migration
+class AddUserIdToTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('task', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::table('tasks', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->timestamps();
             
             // 外部キー制約
             $table->foreign('user_id')->references('id')->on('users');
@@ -30,8 +28,11 @@ class CreateTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task');
-        
-        $table->dropForeign('tasks_user_id_foreign');
+        Schema::table('tasks', function (Blueprint $table) {
+
+            // 中略（ここで外部キー制約やカラムの削除を行う）
+        $table->dropForeign('tasks_user_id_foreign');    
+        $table::dropColumn('user_id');
+        });
     }
 }
