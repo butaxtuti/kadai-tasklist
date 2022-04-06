@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Task;
+
 class TasksController extends Controller
 {
     
@@ -18,7 +20,6 @@ class TasksController extends Controller
             $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
 
             $data = [
-                'user' => $user,
                 'tasks' => $tasks,
             ];
         }
@@ -27,20 +28,32 @@ class TasksController extends Controller
         return view('welcome', $data);
     }
     
+    
+    
+    public function create()
+    {
+        $task = new Task;
+
+        // タスク作成ビューを表示
+        return view('tasks.create', [
+            'task' => $task,
+        ]);
+    }
+    
     public function store(Request $request)
     {
         // バリデーション
         $request->validate([
             'content' => 'required|max:255',
+            'status' => 'required|max:255',
         ]);
 
         // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
         $request->user()->tasks()->create([
             'content' => $request->content,
+            'status' => $request->status,
         ]);
-
-        // 前のURLへリダイレクトさせる
-        return back();
+         return redirect('/');
     }
     
       public function destroy($id)
