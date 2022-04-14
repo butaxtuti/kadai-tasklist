@@ -40,6 +40,17 @@ class TasksController extends Controller
         ]);
     }
     
+     public function show($id)
+    {
+        // idの値でメッセージを検索して取得
+        $task=task::findOrFail($id);
+
+        // タスク詳細ビューでそれを表示
+        return view('tasks.show', [
+            'task' => $task,
+        ]);
+    }
+    
     public function store(Request $request)
     {
         // バリデーション
@@ -54,6 +65,18 @@ class TasksController extends Controller
             'status' => $request->status,
         ]);
          return redirect('/');
+    }
+    
+    
+     public function edit($id)
+    {
+        // idの値でメッセージを検索して取得
+        $task =Task::findOrFail($id);
+
+        // タスク編集ビューでそれを表示
+        return view('tasks.edit', [
+            'task' => $task,
+        ]);
     }
     
       public function destroy($id)
