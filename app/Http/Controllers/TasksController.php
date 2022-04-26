@@ -92,6 +92,7 @@ class TasksController extends Controller
         // メッセージを更新
         if(\Auth::id() === $task->user_id){
             $task->content = $request->content;
+            $task->status = $request->status;
             $task->save();
         }
         // トップページへリダイレクトさせる
